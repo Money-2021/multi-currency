@@ -1,0 +1,5 @@
+
+There are a very limited set of funtiosn availabel within the Multi-currecny payment rail.
+1. Quote: debit amount in slected LCU to any credit LCU
+2. Account multi-currecny balance
+3. PayToSin: transfer global payments accross currecny areas via World Currecny Unit (Gold).
