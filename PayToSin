@@ -56,4 +56,24 @@
         }
 
     }
+
+// Example Receipt
+Here is the cross currency area payment signed receipt..
+{
+  "DebitSecureIdentity": "0110518cd64785bc2e22f81676fa34381d45f0f58f6a",
+  "DebitAmount": 578.77,
+  "DebitAssetId": "ace8f0bf",
+  "CreditSecureIdentity": "01100c9086577c1147cb44c328eb364aebe826c53656",
+  "CreditAmount": 500,
+  "CreditAssetId": "0b595801",
+  "PaymentId": "BD6468B370971C670FDD3BE7F28232B3B9B487A4",
+  "PaidDate": "2026-06-15T02:53:59.6952701+00:00",
+  "PaidAmount": 500,
+  "PaidAssetId": "0b595801",
+  "Signature": {
+    "PublicKey": "{\"alg\":\"Ed25519\",\"kty\":\"OKP\",\"crv\":\"Curve25519\",\"x\":\"VSXyhFnJ0Gf4TDzkEOXM2dMUqWojpCIMsAmB4AulBJM\"}",
+    "Signature": "MGYCIBXyy7uagamhY+B/nYC4lAu5kBzL3KK0ET0DAAhtLduoAiBPuM7xPyxagrcMmqmcbaMd1z3qtmquy4yu38uZhEwbDQMgVSXyhFnJ0Gf4TDzkEOXM2dMUqWojpCIMsAmB4AulBJM="
+  },
+  "IsVerified": true
+}
 }
