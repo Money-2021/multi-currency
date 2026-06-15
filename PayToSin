@@ -2,8 +2,8 @@
     public void UseCase_pay_to_sin()
     {
         // SinB pays SinA in PayMe token
-        string credit_assetId = McOpsSupport.GetAssetId("EUR");
-        string debit_assetId = McOpsSupport.GetAssetId("USD");
+        string credit_assetId = Support.GetAssetId("EUR");
+        string debit_assetId = Support.GetAssetId("USD");
 
         string folder = Environment.GetEnvironmentVariable("Envionment");
         decimal amount = 500;
@@ -16,7 +16,7 @@
         string userToken = fp.GetJwToken();
 
         // Generate PayMeToken
-        string payMeToken = McOpsSupport.PayMe(userTokenPath, amount, credit_assetId);
+        string payMeToken = Support.PayMe(userTokenPath, amount, credit_assetId);
 
         // ... send PayMeToken to Debit Secure Identity
 
