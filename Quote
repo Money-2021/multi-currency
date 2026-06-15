@@ -1,0 +1,39 @@
+ [TestMethod]
+ public void UseCase_quote()
+ {
+
+     string folder = Environment.GetEnvironmentVariable("Envionment");
+     string sin = Environment.GetEnvironmentVariable("SinA");
+
+     string userTokenPath = @"D:\Examples\" + node + @"\" + folder + "\\Token-" + sin + ".json";
+     Fido.FidoProvider fp = new Fido.FidoProvider(userTokenPath);
+
+     // Extract Function endpoint from User Token
+     Uri _baseUri = new Uri(fp.Audience());
+     HttpClient _httpClient = new HttpClient();
+     decimal amt = 1000;
+     // Parms
+     var postParms = new Dictionary<string, string>
+             {
+                 { "buy", "EUR" },
+                 { "sell", "USD" },
+                  { "amount", amt.ToString() }
+             };
+     string Url = Fido.FidoProvider.BuildUrlWithQueryStringUsingUriBuilder(_baseUri + "MultiCurrency/Quote", postParms);
+     Uri _uri = new Uri(Url);
+     _httpClient.BaseAddress = _baseUri;
+     // Add User Device Jwtoken
+     _httpClient.DefaultRequestHeaders.Add("x-token", fp.GetJwToken());
+     HttpResponseMessage response = _httpClient.GetAsync(_uri).Result;
+     if (response.IsSuccessStatusCode)
+     {
+         string amount = response.Content.ReadAsStringAsync().Result;
+     }
+     else
+     {
+         //
+         string error = response.Content.ReadAsStringAsync().Result;
+         throw new Exception(error);
+     }
+
+ }
