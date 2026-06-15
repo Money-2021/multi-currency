@@ -1,9 +1,9 @@
 public class Support
 {
-    public static Guid MaxValue = new Guid("FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF");
+       public static Guid MaxValue = new Guid("FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF");
 
    
-    public static string PayMe(string userTokenPath, decimal amount)
+    public static string PayMe(string userTokenPath, decimal amount, string assetId)
     {
         Fido.FidoProvider fp = new Fido.FidoProvider(userTokenPath);
         // Extract endpoint from Device Token
@@ -12,9 +12,17 @@ public class Support
         // Obtain JwToken
         string samount = amount.ToString("N2"); // Amount in cents
         HttpClient _httpClient = new HttpClient();
-        string _relativeUrl = "MultiCurrency/PayMeToken?amount=" + samount;
-        Uri _uri = new Uri(_baseUri, _relativeUrl);
         _httpClient.BaseAddress = _baseUri;
+        // Parms
+        var postParms = new Dictionary<string, string>
+                {
+                    { "amount", samount },
+                    { "assetId", assetId }
+                 
+                };
+        string Url = Fido.FidoProvider.BuildUrlWithQueryStringUsingUriBuilder(_baseUri+"MultiCurrency/PayMeToken", postParms);
+        Uri _uri = new Uri(Url);
+       
         // Add Device Jwtoken
         _httpClient.DefaultRequestHeaders.Add("x-token", fp.GetJwToken());
         // Add device signature
@@ -55,6 +63,10 @@ public class Support
             throw new Exception(error);
         }
 
+    }
+    public static string GetAssetId(string code)
+    {
+        return  ApplicationHttpClientProvider.GetAssetId(code).AssetId;
     }
   
     
