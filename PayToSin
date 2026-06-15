@@ -1,30 +1,29 @@
     [TestMethod]
     public void UseCase_pay_to_sin()
     {
-        // SinB pays SinA in PayMe token
-        string credit_assetId = Support.GetAssetId("EUR");
-        string debit_assetId = Support.GetAssetId("USD");
-
-        string folder = Environment.GetEnvironmentVariable("Envionment");
-        decimal amount = 500;
-
-         // Step 1: Generate Credit PayMeToken
-        string credit_sin = Environment.GetEnvironmentVariable("SinB");
-
-        string userTokenPath = @"D:\Examples\" + node + @"\" + folder + "\\Token-" + credit_sin + ".json";
-        Fido.FidoProvider fp = new Fido.FidoProvider(userTokenPath);
-        string userToken = fp.GetJwToken();
-
-        // Generate PayMeToken
-        string payMeToken = Support.PayMe(userTokenPath, amount, credit_assetId);
-
-        // ... send PayMeToken to Debit Secure Identity
-
-        //Step 2: Debit Authorisation Token
-        string debit_sin = Environment.GetEnvironmentVariable("SinA");
-        // Debit user token
-        userTokenPath = @"D:\Examples\" + node + @"\" + folder + "\\Token-" + debit_sin + ".json";
-        fp = new Fido.FidoProvider(userTokenPath);
+         // SinB pays SinA in PayMe token
+         string folder = Environment.GetEnvironmentVariable("Envionment");
+         decimal amount = 500;
+        
+          // Step 1: Generate Credit PayMeToken
+         string credit_sin = Environment.GetEnvironmentVariable("SinB");
+        
+         string userTokenPath = @"D:\Examples\" + node + @"\" + folder + "\\Token-" + credit_sin + ".json";
+         Fido.FidoProvider fp = new Fido.FidoProvider(userTokenPath);
+         string userToken = fp.GetJwToken();
+         string credit_assetId = fp.GetAssetIdByCode("EUR");
+        
+         // Generate PayMeToken
+         string payMeToken = McOpsSupport.PayMe(userTokenPath, amount, credit_assetId);
+        
+         // ... send PayMeToken to Debit Secure Identity
+        
+         //Step 2: Debit Authorisation Token
+         string debit_sin = Environment.GetEnvironmentVariable("SinA");
+         // Debit user token
+         userTokenPath = @"D:\Examples\" + node + @"\" + folder + "\\Token-" + debit_sin + ".json";
+         fp = new Fido.FidoProvider(userTokenPath);
+         string debit_assetId = fp.GetAssetIdByCode("USD");
 
         // Load PayMe post content 
         StringContent content = new StringContent(payMeToken);  // Credit Token
