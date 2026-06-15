@@ -1,0 +1,60 @@
+    [TestMethod]
+    public void UseCase_pay_to_sin()
+    {
+        // SinB pays SinA in PayMe token
+        string credit_assetId = McOpsSupport.GetAssetId("EUR");
+        string debit_assetId = McOpsSupport.GetAssetId("USD");
+
+        string folder = Environment.GetEnvironmentVariable("Envionment");
+        decimal amount = 500;
+
+         // Step 1: Generate Credit PayMeToken
+        string credit_sin = Environment.GetEnvironmentVariable("SinB");
+
+        string userTokenPath = @"D:\Examples\" + node + @"\" + folder + "\\Token-" + credit_sin + ".json";
+        Fido.FidoProvider fp = new Fido.FidoProvider(userTokenPath);
+        string userToken = fp.GetJwToken();
+
+        // Generate PayMeToken
+        string payMeToken = McOpsSupport.PayMe(userTokenPath, amount, credit_assetId);
+
+        // ... send PayMeToken to Debit Secure Identity
+
+        //Step 2: Debit Authorisation Token
+        string debit_sin = Environment.GetEnvironmentVariable("SinA");
+        // Debit user token
+        userTokenPath = @"D:\Examples\" + node + @"\" + folder + "\\Token-" + debit_sin + ".json";
+        fp = new Fido.FidoProvider(userTokenPath);
+
+        // Load PayMe post content 
+        StringContent content = new StringContent(payMeToken);  // Credit Token
+
+        // Extract Function endpoint from User Token
+        Uri _baseUri = new Uri(fp.Audience());
+        HttpClient _httpClient = new HttpClient();
+        // Build funtion endpoint Uri
+        string _relativeUrl = "MultiCurrency/PayToSin?assetId=" +debit_assetId;
+        Uri _uri = new Uri(_baseUri, _relativeUrl);
+        _httpClient.BaseAddress = _baseUri;
+        // Add User Device Jwtoken
+        _httpClient.DefaultRequestHeaders.Add("x-token", fp.GetJwToken());
+        string shash = payMeToken + fp.GetSecureIdentity();
+        string ssign = fp.Sign(shash);
+        _httpClient.DefaultRequestHeaders.Add("x-jws-signature", ssign);
+        // Post Payment
+        HttpResponseMessage response = _httpClient.PostAsync(_uri, content).Result;
+        if (response.IsSuccessStatusCode)
+        {
+            string jwToken = response.Content.ReadAsStringAsync().Result;
+            string s = @"D:\Examples\" + node + @"\Payments\PayReceipt-" + debit_sin + ".json";
+            System.IO.File.WriteAllText(s, jwToken);
+        }
+        else
+        {
+            //
+            string error = response.Content.ReadAsStringAsync().Result;
+            throw new Exception(error);
+        }
+
+    }
+}
