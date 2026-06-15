@@ -1,0 +1,33 @@
+ [TestMethod]
+ public void UseCase_balance()
+ {
+     
+     string folder = Environment.GetEnvironmentVariable("Envionment");
+     string sin = Environment.GetEnvironmentVariable("SinA");
+
+     string userTokenPath = @"D:\Examples\" + node + @"\" + folder + "\\Token-" + sin + ".json";
+     Fido.FidoProvider fp = new Fido.FidoProvider(userTokenPath);
+ 
+     // Extract Function endpoint from User Token
+     Uri _baseUri = new Uri(fp.Audience());
+     HttpClient _httpClient = new HttpClient();
+     // Build funtion endpoint Uri
+     string _relativeUrl = "MultiCurrency/Balance";
+     Uri _uri = new Uri(_baseUri, _relativeUrl);
+     _httpClient.BaseAddress = _baseUri;
+     // Add User Device Jwtoken
+     _httpClient.DefaultRequestHeaders.Add("x-token", fp.GetJwToken());
+     HttpResponseMessage response = _httpClient.GetAsync(_uri).Result;
+     if (response.IsSuccessStatusCode)
+     {
+         string jwToken = response.Content.ReadAsStringAsync().Result;
+         Dictionary<string, decimal> bals = System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, decimal>>(jwToken);
+     }
+     else
+     {
+         //
+         string error = response.Content.ReadAsStringAsync().Result;
+         throw new Exception(error);
+     }
+
+ }
