@@ -56,6 +56,7 @@
         }
 
     }
+}
 
 // Example Receipt
 Here is the cross currency area payment signed receipt..
@@ -76,4 +77,4 @@ Here is the cross currency area payment signed receipt..
   },
   "IsVerified": true
 }
-}
+
