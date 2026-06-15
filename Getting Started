@@ -1,34 +1,33 @@
-This file provides the step of how to use this site supplied code base.
+This file outlines the steps for using the code base provided on this site.
 
-Development Envionment
-1. Windows 11 2025 Update (Version 25H2)
-2. Visual Studio 2022
-3. Obtain a "Device Token" from your node operator, this will self configure your devlopment envionment.
+Development Environment  
+1. Windows 11 2025 Update (Version 25H2)  
+2. Visual Studio 2022  
+3. Obtain a "Device Token" from your node operator, which will automatically configure your development environment.
 
-Steps
-1. Download the supplied Fido Provider here https://github.com/Money-2021/VaultedObjects/blob/main/Fido.dll
-   and the Support file here: https://github.com/Money-2021/PaymentClient/blob/main/Support
-2. Initialise Device, using supplied authToken
-    Fido.FidoProvider d = new Fido.FidoProvider(authToken, Fido.FidoProvider.TechType.Function);
-   // Register Device
-   d.Enrol(Enum.GetName(typeof(ProviderType), ProviderType.User));
-   userTokenPath = @"D:\Examples\" + node + @"\" + folder + "\\Token-" + sin + ".json";
-   // Save Token
+Steps  
+1. Download the supplied Fido Provider from https://github.com/Money-2021/VaultedObjects/blob/main/Fido.dll  
+   and the Support file from https://github.com/Money-2021/PaymentClient/blob/main/Support  
+2. Initialise the Device using the provided authToken  
+    Fido.FidoProvider d = new Fido.FidoProvider(authToken, Fido.FidoProvider.TechType.Function);  
+   // Register the Device  
+   d.Enrol(Enum.GetName(typeof(ProviderType), ProviderType.User));  
+   userTokenPath = @"D:\Examples\" + node + @"\" + folder + "\\Token-" + sin + ".json";  
+   // Save the Token  
    d.SaveStore(userTokenPath);
 
-3. Great new Visual Studio Net8.0 MSTest (Microsoft's built-in framework)
-4. Down laod the UnitTest cases as provided
-5. Adapt the supplied code to your local MSTest envionment. including configuration of your DeviceToken pathway.
-6. Execute the supplied UnitTest cases to verify correct operation of the code funtionality.
+3. Use the new Visual Studio Net8.0 MSTest (Microsoft's built-in framework)  
+4. Download the UnitTest cases provided  
+5. Adapt the supplied code to your local MSTest environment, including configuring your DeviceToken path  
+6. Run the supplied UnitTest cases to confirm the code functions correctly
 
-Suggested MSTest flow
-1. UseCase_balance()
-2. UseCase_quote()
+Suggested MSTest flow  
+1. UseCase_balance()  
+2. UseCase_quote()  
 3. UseCase_pay_to_sin()
 
+Notes  
+1. A professional developer should typically spend about 30 minutes to complete the first test case  
+2. Visual Studio should automatically download or prompt to download all required Net8.0 supporting libraries
 
-Notes
-1. Typically a professional developer should allocate around 30 minutes to dcomplete the fist test case.
-2. Visual Studion should automaticlaly download or request the download of all required Net8.0 supporting libaries.
-
-Enjoy the new world of global cross currency area payments.
+Enjoy exploring the new world of global cross-currency payments.
