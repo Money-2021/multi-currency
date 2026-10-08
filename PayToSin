@@ -31,7 +31,7 @@
         // Extract Function endpoint from User Token
         Uri _baseUri = new Uri(fp.Audience());
         HttpClient _httpClient = new HttpClient();
-        // Build funtion endpoint Uri
+        // Build function endpoint Uri
         string _relativeUrl = "MultiCurrency/PayToSin?assetId=" +debit_assetId;
         Uri _uri = new Uri(_baseUri, _relativeUrl);
         _httpClient.BaseAddress = _baseUri;
@@ -59,7 +59,7 @@
 }
 
 // Example Receipt
-Here is the cross currency area payment signed receipt..
+Here is the cross currency area payment signed receipt.
 {
   "DebitSecureIdentity": "0110518cd64785bc2e22f81676fa34381d45f0f58f6a",
   "DebitAmount": 578.77,
